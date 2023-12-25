@@ -43,6 +43,7 @@ export default function TextArea({
         value={content}
         onKeyDown={(event) => {
           if (event.key === "Enter" && !event.shiftKey) {
+            event.preventDefault();
             handleSubmitButton();
           }
         }}
