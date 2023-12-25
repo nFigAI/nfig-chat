@@ -93,7 +93,7 @@ function Page() {
   //   </div>
   // );
   return (
-    <div className="relative h-screen w-full flex bg-gradient-to-b from-sky-600 via-blue-900 to-blue-950">
+    <div className="relative h-screen w-full flex bg-gradient-to-b from-sky-600 via-blue-900 to-blue-950 overflow-y-hidden">
       <div className="w-[638px] h-[583px] absolute bottom-[-400px] left-[-300px] hidden lg:block">
         <div className="w-[557px] h-[557px] left-[81px] top-[26px] absolute rounded-full border border-sky-600" />
         <div className="w-[557px] h-[557px] left-0 top-0 absolute rounded-full border border-sky-600" />
