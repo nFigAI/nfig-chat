@@ -4,16 +4,10 @@ import { useRouter } from "next/router";
 import { useAuth } from "@/auth/authContext";
 
 export default function Home() {
-  const [isComponentVisible, setIsComponentVisible] = useState(false);
   const router = useRouter();
   const { loading, user } = useAuth();
 
-  const toggleComponentVisibility = () => {
-    setIsComponentVisible(!isComponentVisible);
-  };
-
   useEffect(() => {
-    console.log(user);
     if (loading && !user) return;
     else if (!user) router.push("/login").then(() => {});
   }, [user, router, loading]);
@@ -50,7 +44,7 @@ export default function Home() {
 
   return (
     <main className="overflow-hidden w-full h-screen relative flex">
-      <Chat toggleComponentVisibility={toggleComponentVisibility} />
+      <Chat />
     </main>
   );
 }
