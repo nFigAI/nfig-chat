@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import Chat from "@/components/Chat";
 import { useRouter } from "next/router";
 import { useAuth } from "@/auth/authContext";
