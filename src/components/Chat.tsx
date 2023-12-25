@@ -63,13 +63,18 @@ const Chat = (props: any) => {
         console.log("Fetch request aborted");
         return;
       }
-      setErrorMessage(JSON.stringify(error));
+      // @ts-ignore
+      const message = error.error_message;
+
+      setErrorMessage(
+        message ?? "Something went wrong, please try again later",
+      );
       console.error("Error in API request:", error);
     }
   };
 
   const abortFetch = () => {
-    console.log("Called")
+    console.log("Called");
     abortController.abort();
     setOutput("");
     setGeneratingOutput(false);
@@ -150,9 +155,14 @@ const Chat = (props: any) => {
               </div>
             </div>
           )}
-          {errorMessage && (
-            <div className="w-full py-6 px-5 rounded-[14px] border border-slate-200 justify-start items-center inline-flex text-red-700 text-base font-semibold leading-none">
-              {errorMessage}
+          {errorMessage.length > 1 && (
+            <div className="flex my-4">
+              <div className="w-10 h-9 bg-gradient-to-t from-indigo-700 to-[#155EEF] rounded-full flex items-center justify-center">
+                <BsStars color="#FFFFFF" />
+              </div>
+              <div className="ml-4 w-full py-6 px-5 rounded-[14px] border border-slate-200 justify-start items-center inline-flex text-red-700 text-base font-semibold leading-none">
+                {errorMessage}
+              </div>
             </div>
           )}
         </div>
