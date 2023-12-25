@@ -61,14 +61,75 @@ function Page() {
       </div>
     );
   }
+  // return (
+  //   <div className="h-screen w-full">
+  //     <div className="min-h-screen flex items-center justify-center">
+  //       <div className="px-6 sm:px-0 max-w-sm">
+  //         <button
+  //           onClick={signInWithGoogle}
+  //           type="button"
+  //           className="text-white w-full  bg-[#4285F4] hover:bg-[#4285F4]/90 focus:ring-4 focus:outline-none focus:ring-[#4285F4]/50 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center justify-between dark:focus:ring-[#4285F4]/55 mr-2 mb-2"
+  //         >
+  //           <svg
+  //             className="mr-2 -ml-1 w-4 h-4"
+  //             aria-hidden="true"
+  //             focusable="false"
+  //             data-prefix="fab"
+  //             data-icon="google"
+  //             role="img"
+  //             xmlns="http://www.w3.org/2000/svg"
+  //             viewBox="0 0 488 512"
+  //           >
+  //             <path
+  //               fill="currentColor"
+  //               d="M488 261.8C488 403.3 391.1 504 248 504 110.8 504 0 393.2 0 256S110.8 8 248 8c66.8 0 123 24.5 166.3 64.9l-67.5 64.9C258.5 52.6 94.3 116.6 94.3 256c0 86.5 69.1 156.6 153.7 156.6 98.2 0 135-70.4 140.8-106.9H248v-85.3h236.1c2.3 12.7 3.9 24.9 3.9 41.4z"
+  //             ></path>
+  //           </svg>
+  //           Sign up with Google
+  //           <div></div>
+  //         </button>
+  //       </div>
+  //     </div>
+  //   </div>
+  // );
   return (
-    <div className="h-screen w-full">
-      <div className="min-h-screen flex items-center justify-center">
-        <div className="px-6 sm:px-0 max-w-sm">
+    <div className="relative h-screen w-full flex bg-gradient-to-b from-sky-600 via-blue-900 to-blue-950">
+      <div className="w-[638px] h-[583px] absolute bottom-[-400px] left-[-300px] hidden lg:block">
+        <div className="w-[557px] h-[557px] left-[81px] top-[26px] absolute rounded-full border border-sky-600" />
+        <div className="w-[557px] h-[557px] left-0 top-0 absolute rounded-full border border-sky-600" />
+      </div>
+      <div className="w-[60%] h-full  flex-col justify-center pl-[157px] hidden lg:flex">
+        <div className="text-white text-[40px] font-bold ">Nfig Chat</div>
+        <div className="text-base font-medium  text-white max-w-[600px]">
+          Effortlessly automate testing cycles with Nfig - requires no coding or
+          action recording.&nbsp;Achieve faster,&nbsp;more accurate results and streamline
+          your testing process.
+        </div>
+        <div className="mt-6">
+          <a
+            href="https://thechi.app"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-block"
+          >
+            <button className="w-[135px] py-4 bg-[#155EEF] rounded-[45px] shadow text-white text-sm font-semibold leading-none">
+              Know more
+            </button>
+          </a>
+        </div>
+      </div>
+      <div className="w-full lg:w-[40%] relative bg-white flex items-center justify-center">
+        <div>
+          <div className="text-blue-950 text-2xl font-bold leading-normal">
+            Login
+          </div>
+          <div className="text-base font-medium leading-7">
+            Welcome Back
+          </div>
           <button
             onClick={signInWithGoogle}
             type="button"
-            className="text-white w-full  bg-[#4285F4] hover:bg-[#4285F4]/90 focus:ring-4 focus:outline-none focus:ring-[#4285F4]/50 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center justify-between dark:focus:ring-[#4285F4]/55 mr-2 mb-2"
+            className="mt-8 text-white w-full  bg-[#4285F4] hover:bg-[#4285F4]/90 focus:ring-4 focus:outline-none focus:ring-[#4285F4]/50 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center justify-between dark:focus:ring-[#4285F4]/55 mr-2 mb-2"
           >
             <svg
               className="mr-2 -ml-1 w-4 h-4"

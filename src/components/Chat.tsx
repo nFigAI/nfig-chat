@@ -1,5 +1,4 @@
 import { ChangeEvent, useState } from "react";
-import { CgInfo } from "react-icons/cg";
 import { useAuth } from "@/auth/authContext";
 import Image from "next/image";
 import TextArea from "@/components/TextArea";
@@ -8,8 +7,9 @@ import Lottie from "lottie-react";
 import Animation from "../../public/animation.json";
 import { BsStars } from "react-icons/bs";
 import { FaUser } from "react-icons/fa";
-const Chat = (props: any) => {
-  const { user } = useAuth();
+import { TbLogout } from "react-icons/tb";
+const Chat = () => {
+  const { user, signOut } = useAuth();
 
   const [content, setContent] = useState("");
   const [isLoading, setIsLoading] = useState(false);
@@ -86,8 +86,13 @@ const Chat = (props: any) => {
       <div className="px-5 py-5 w-full flex justify-between items-center ">
         <div className="text-blue-950 text-[34px] font-bold ">Nfig Chat</div>
         <div className="py-2 px-2 bg-white rounded-[30px] shadow flex items-center">
-          <div className="pr-2.5 color-[#718096] cursor-pointer">
-            <CgInfo aria-setsize={24} size={24} color="#718096" />
+          <div
+            className="pr-2.5 color-[#718096] cursor-pointer"
+            onClick={() => {
+              signOut();
+            }}
+          >
+            <TbLogout aria-setsize={24} size={24} color="#718096" />
           </div>
           <div>
             {user?.photoURL && (

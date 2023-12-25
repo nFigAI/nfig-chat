@@ -45,7 +45,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     try {
       await auth.signOut().then((r) => {
         setUser(null);
-        router.push("/signup");
+        router.push("/login");
       });
     } catch (error) {
       console.error("Error signing out:", error);
