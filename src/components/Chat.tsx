@@ -62,6 +62,9 @@ const Chat = () => {
         )}&session=${encodeURIComponent(uid)}`,
         {
           signal: abortController.signal,
+          headers: {
+            Authorization: `BEARER ${await user?.getIdToken()!}`,
+          },
         },
       );
       if (abortController.signal.aborted) {
