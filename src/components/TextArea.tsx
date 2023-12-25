@@ -46,7 +46,7 @@ export default function TextArea({
             handleSubmitButton();
           }
         }}
-        className={`transition-all duration-100 ease-in-out max-h-[200px] pl-4 md:pl-5 py-[15px] w-full h-full ${
+        className={`transition-all duration-100 ease-in-out max-h-[200px] pl-4 pr-10 md:pl-5 py-[15px] w-full h-full ${
           focused ? "border border-blue-950" : "border border-slate-200"
         } outline-none resize-none text-slate-500 text-xs md:text-sm font-medium leading-[14px] rounded-[12px] bg-transparent`}
         placeholder="Send a message"
