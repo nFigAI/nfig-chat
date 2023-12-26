@@ -14,7 +14,9 @@ export default function App({ Component, pageProps }: AppProps) {
       </Head>
       <DefaultSeo
         title="Nfig Chat"
-        description="Nfig chat for User Flow Generation"
+        description="Effortlessly automate testing cycles with Nfig - requires no coding or
+          action recording.&nbsp;Achieve faster,&nbsp;more accurate results and streamline
+          your testing process."
         openGraph={{
           type: "website",
           locale: "en_IE",
