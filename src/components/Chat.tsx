@@ -1,16 +1,15 @@
 import { ChangeEvent, useEffect, useRef, useState } from "react";
-import Lottie from "lottie-react";
-import Image from "next/image";
-import Markdown from "react-markdown";
-import rehypeHighlight from "rehype-highlight";
 import { useAuth } from "@/auth/authContext";
+import Image from "next/image";
 import TextArea from "@/components/TextArea";
+import Markdown from "react-markdown";
+import Lottie from "lottie-react";
 import Animation from "../../public/animation.json";
-import { generateUniqueId } from "@/utils/uid";
-import { RiChat1Line } from "react-icons/ri";
 import { BsStars } from "react-icons/bs";
 import { FaUser } from "react-icons/fa";
 import { TbLogout } from "react-icons/tb";
+import { generateUniqueId } from "@/utils/uid";
+import { RiChat1Line } from "react-icons/ri";
 
 interface ConversationInterface {
   role: "system" | "user";
@@ -25,7 +24,7 @@ const Chat = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [generatingOutput, setGeneratingOutput] = useState(false);
   const messagesEndRef = useRef<HTMLDivElement | null>(null);
-  const abortController = useRef<AbortController | null>(null);
+  const abortController = new AbortController();
 
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
@@ -57,56 +56,58 @@ const Chat = () => {
     setContent("");
 
     try {
-      let lastWord = "";
-      if (abortController.current) {
-        abortController.current.abort();
-      }
-      abortController.current = new AbortController();
-
       const response = await fetch(
-        `https://62pmd57an7itunvmecqrjjaluu0sslhf.lambda-url.us-east-1.on.aws/?query=${encodeURIComponent(
-          content,
-        )}&session=${encodeURIComponent(uid)}`,
+        `https://api.nfig.io/agent_chat/?query=${encodeURIComponent(content)}`,
         {
-          signal: abortController.current.signal,
           headers: {
-            Authorization: `BEARER ${await user?.getIdToken()!}`,
+            "Session-ID": encodeURIComponent(uid),
           },
         },
       );
-
-      if (abortController.current.signal.aborted) {
-        console.log("Fetch request aborted");
-        return;
-      }
-
-      const reader = response.body!.getReader();
-      while (true) {
-        if (isLoading) {
-          setIsLoading(false);
-        }
-        const { done, value } = await reader.read();
-        if (done) {
-          setGeneratingOutput(false);
-          break;
-        }
-
-        const chunk = new TextDecoder().decode(value);
-        if (areLastAndNextWordsEqual(lastWord, chunk)) continue;
-
+      if (response.ok) {
+        const jsonResponse = await response.json();
+        console.log(jsonResponse);
         setConversation((prevState) => {
-          return [
-            ...prevState.slice(0, -1),
-            {
-              ...prevState[prevState.length - 1],
-              content: prevState[prevState.length - 1].content + chunk,
-            },
-          ];
+          let temp = [...prevState];
+          temp[temp.length - 1].content = jsonResponse.response;
+          return temp;
         });
-        lastWord = chunk;
       }
+      // const response = await fetch(
+      //   `https://62pmd57an7itunvmecqrjjaluu0sslhf.lambda-url.us-east-1.on.aws/?query=${encodeURIComponent(
+      //     content,
+      //   )}&session=${encodeURIComponent(uid)}`,
+      //   {
+      //     signal: abortController.signal,
+      //     headers: {
+      //       Authorization: `BEARER ${await user?.getIdToken()!}`,
+      //     },
+      //   },
+      // );
+      // if (abortController.signal.aborted) {
+      //   console.log("Fetch request aborted");
+      //   return;
+      // }
+
+      // const reader = response.body!.getReader();
+      // while (true) {
+      //   if (isLoading) {
+      //     setIsLoading(false);
+      //   }
+      //   const { done, value } = await reader.read();
+      //   if (done) {
+      //     setGeneratingOutput(false);
+      //     break;
+      //   }
+      //   setConversation((prevState) => {
+      //     let temp = [...prevState];
+      //     temp[temp.length - 1].content =
+      //       temp[temp.length - 1].content + new TextDecoder().decode(value);
+      //     return temp;
+      //   });
+      // }
     } catch (error) {
-      if (abortController.current!.signal.aborted) {
+      if (abortController.signal.aborted) {
         console.log("Fetch request aborted");
         return;
       }
@@ -127,11 +128,6 @@ const Chat = () => {
     }
   };
 
-  function areLastAndNextWordsEqual(lastWord: string, nextWord: string) {
-    const lastWordLower = lastWord.toLowerCase();
-    const nextWordLower = nextWord.toLowerCase();
-    return lastWordLower === nextWordLower;
-  }
   const clearChat = () => {
     setConversation([]);
     setIsLoading(false);
@@ -150,7 +146,7 @@ const Chat = () => {
 
   const abortFetch = () => {
     console.log("Called");
-    abortController.current!.abort();
+    abortController.abort();
 
     setGeneratingOutput(false);
     setIsLoading(false);
@@ -195,11 +191,11 @@ const Chat = () => {
         className="h-full w-full flex justify-center max-h-[535px] px-5"
         style={{ overflowY: "scroll" }}
       >
-        <div className="max-w-[1200px] md:w-[70%] lg:w-[60%] xl:w-[50%] pb-8">
+        <div className="w-full max-w-[1200px] md:w-[70%] lg:w-[60%] xl:w-[50%] pb-8">
           {conversation.map((value, key) => {
             if (value.role === "user" && value.type === "message") {
               return (
-                <div key={key} className="flex w-full my-4">
+                <div key={key} className="flex w-full">
                   <div className="w-10 h-9 border border-slate-200 rounded-full flex items-center justify-center">
                     <FaUser color="#155EEF" />
                   </div>
@@ -221,10 +217,8 @@ const Chat = () => {
                   <div className="w-10 h-9 bg-gradient-to-t from-indigo-700 to-[#155EEF] rounded-full flex items-center justify-center">
                     <BsStars color="#FFFFFF" />
                   </div>
-                  <div className="overflow-auto ml-4 w-full p-5 bg-white rounded-[14px] shadow justify-start items-center text-blue-950 text-sm font-medium leading-normal">
-                    <Markdown rehypePlugins={[rehypeHighlight]}>
-                      {value.content}
-                    </Markdown>
+                  <div className="ml-4 mb-4  w-full p-5 bg-white rounded-[14px] shadow justify-start items-center text-blue-950 text-sm font-medium leading-normal">
+                    <Markdown>{value.content}</Markdown>
                   </div>
                 </div>
               );
