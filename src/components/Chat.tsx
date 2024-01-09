@@ -10,6 +10,7 @@ import { FaUser } from "react-icons/fa";
 import { TbLogout } from "react-icons/tb";
 import { generateUniqueId } from "@/utils/uid";
 import { RiChat1Line } from "react-icons/ri";
+import remarkGfm from "remark-gfm";
 
 interface ConversationInterface {
   role: "system" | "user";
@@ -218,7 +219,9 @@ const Chat = () => {
                     <BsStars color="#FFFFFF" />
                   </div>
                   <div className="ml-4 mb-4  w-full p-5 bg-white rounded-[14px] shadow justify-start items-center text-blue-950 text-sm font-medium leading-normal">
-                    <Markdown>{value.content}</Markdown>
+                    <Markdown remarkPlugins={[remarkGfm]}>
+                      {value.content}
+                    </Markdown>
                   </div>
                 </div>
               );
